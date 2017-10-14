@@ -1,60 +1,48 @@
 <template>
-  <div id="app">
-    <img src="./assets/logo.png">
-    <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank">Forum</a></li>
-      <li><a href="https://gitter.im/vuejs/vue" target="_blank">Gitter Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank">Twitter</a></li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li><a href="http://router.vuejs.org/" target="_blank">vue-router</a></li>
-      <li><a href="http://vuex.vuejs.org/" target="_blank">vuex</a></li>
-      <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
-    </ul>
-  </div>
+    <div id="app" class="container">
+        <h1 class="title is-1">Liste des matrices</h1>
+        <add-matrice></add-matrice>
+        {{ $store.state.matrices }}
+        <matrice v-for="(matrice, index) in matrices"
+                 :matrice="matrice"
+                 :index="index"
+                 key="index"
+        ></matrice>
+    </div>
 </template>
 
 <script>
-export default {
-  name: 'app',
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App'
+    import Matrice from './components/Matrice.vue'
+    import addMatrice from './components/addMatrice.vue'
+    import { getMatrices, matricesStorage } from './store/storage'
+    import * as types from './store/mutation-types'
+    export default {
+        data(){
+            return {
+                matrices: getMatrices()
+            }
+        },
+        components: {
+            Matrice,
+            addMatrice
+        },
+        watch:{
+            matrices: {
+                handler: function (matrices) {
+                    matricesStorage.save(matrices)
+                },
+                deep: true
+            }
+        },
+        mounted(){
+            // Listen for the event.
+                this.$el.addEventListener(types.ADD_MATRICE, function (e) {
+                    console.log('EVENT')
+                }, false);
+        }
+
     }
-  }
-}
 </script>
-
 <style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-
-h1, h2 {
-  font-weight: normal;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
-}
+    @import "~bulma";
 </style>

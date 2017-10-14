@@ -1,0 +1,5 @@
+export const ADD_TODO = 'ADD_TODO'
+export const REMOVE_TODO = 'REMOVE_TODO'
+export const SAVE_TODO = 'SAVE_TODO'
+export const SET_MATRICES = 'SET_MATRICES'
+export const ADD_MATRICE = 'ADD_MATRICE'
